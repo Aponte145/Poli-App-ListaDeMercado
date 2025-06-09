@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     echo '🐳 Construyendo imágenes de Docker...'
-                    sh 'docker compose build'
+                    sh 'docker-compose build'
                     echo 'Imágenes de Docker construidas exitosamente.'
                 }
             }
