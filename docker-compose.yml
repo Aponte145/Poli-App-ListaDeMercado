@@ -1,16 +1,16 @@
 services:
   backend:
     build:
-      context: ./backend\MercappBackend
+      context: ./backend/MercappBackend
     container_name: springboot-backend
     ports:
-      - "8080:8080"
+      - "8096:8097"
     networks:
       - mercapp-network
 
   frontend:
     build:
-      context: ./frontend\mercappfrontend
+      context: ./frontend/mercappfrontend
     container_name: react-frontend
     ports:
       - "3000:80"
