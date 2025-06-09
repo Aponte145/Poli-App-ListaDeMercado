@@ -10,8 +10,14 @@ pipeline {
                 script {
                     dir('backend/MercappBackend') {
                         echo '✅ Iniciando construcción del Backend...'
-                        // Utiliza el wrapper de Maven para construir el proyecto y ejecutar pruebas
+                        
+                        // ===== AÑADIR ESTA LÍNEA =====
+                        // Otorga permisos de ejecución al script de Maven
+                        sh 'chmod +x mvnw'
+                        
+                        // Ahora ejecuta el comando de construcción
                         sh './mvnw clean package'
+                        
                         echo 'Backend construido y probado exitosamente.'
                     }
                 }
@@ -26,7 +32,6 @@ pipeline {
                 script {
                     dir('frontend/mercappfrontend') {
                         echo '✅ Iniciando construcción del Frontend...'
-                        // Instala dependencias y ejecuta pruebas
                         sh 'npm install'
                         sh 'npm test'
                         sh 'npm run build'
@@ -43,7 +48,6 @@ pipeline {
             steps {
                 script {
                     echo '🐳 Construyendo imágenes de Docker...'
-                    // Utiliza el docker-compose.yml de la raíz para construir las imágenes
                     sh 'docker-compose build'
                     echo 'Imágenes de Docker construidas exitosamente.'
                 }
@@ -57,8 +61,8 @@ pipeline {
             steps {
                 script {
                     echo '🚀 Desplegando la aplicación con Docker Compose...'
-                    sh 'docker-compose down' // Detiene contenedores anteriores si existen
-                    sh 'docker-compose up -d' // Inicia los nuevos contenedores en segundo plano
+                    sh 'docker-compose down'
+                    sh 'docker-compose up -d'
                     echo '🎉 Aplicación desplegada exitosamente.'
                 }
             }
@@ -67,8 +71,9 @@ pipeline {
 
     post {
         always {
-            // Limpia los contenedores después de la ejecución
             echo '🧹 Limpiando...'
+            // Es buena práctica detener los contenedores aquí también
+            // sh 'docker-compose down' 
         }
     }
 }
