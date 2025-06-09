@@ -60,8 +60,8 @@ pipeline {
                 script {
                     echo '🚀 Desplegando la aplicación con Docker Compose...'
                     // ===== Y CAMBIOS AQUÍ =====
-                    sh 'docker compose down'
-                    sh 'docker compose up -d'
+                    sh 'docker-compose down'
+                    sh 'docker-compose up -d'
                     echo '🎉 Aplicación desplegada exitosamente.'
                 }
             }
