@@ -47,21 +47,21 @@ pipeline {
             steps {
                 script {
                     echo '🐳 Construyendo imágenes de Docker...'
-                    sh 'docker-compose build'
+                    sh 'docker compose build'
                     echo 'Imágenes de Docker construidas exitosamente.'
                 }
             }
         }
-
-        // ===========================================
+             // ===========================================
         // ETAPA 4: DESPLIEGUE DE LA APLICACIÓN
         // ===========================================
         stage('Deploy Application') {
             steps {
                 script {
                     echo '🚀 Desplegando la aplicación con Docker Compose...'
-                    sh 'docker-compose down'
-                    sh 'docker-compose up -d'
+                    // ===== Y CAMBIOS AQUÍ =====
+                    sh 'docker compose down'
+                    sh 'docker compose up -d'
                     echo '🎉 Aplicación desplegada exitosamente.'
                 }
             }
