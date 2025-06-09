@@ -10,14 +10,8 @@ pipeline {
                 script {
                     dir('backend/MercappBackend') {
                         echo '✅ Iniciando construcción del Backend...'
-                        
-                        // ===== AÑADIR ESTA LÍNEA =====
-                        // Otorga permisos de ejecución al script de Maven
                         sh 'chmod +x mvnw'
-                        
-                        // Ahora ejecuta el comando de construcción
                         sh './mvnw clean package'
-                        
                         echo 'Backend construido y probado exitosamente.'
                     }
                 }
@@ -28,10 +22,15 @@ pipeline {
         // ETAPA 2: CONSTRUCCIÓN Y PRUEBA DEL FRONTEND
         // ===========================================
         stage('Build & Test Frontend') {
+            // ===== AÑADIR ESTE BLOQUE 'AGENT' =====
+            // Le dice a Jenkins que ejecute esta etapa en un contenedor con Node.js
+            agent {
+                docker { image 'node:18-alpine' }
+            }
             steps {
                 script {
                     dir('frontend/mercappfrontend') {
-                        echo '✅ Iniciando construcción del Frontend...'
+                        echo '✅ Iniciando construcción del Frontend dentro de un contenedor Node.js...'
                         sh 'npm install'
                         sh 'npm test'
                         sh 'npm run build'
@@ -72,8 +71,6 @@ pipeline {
     post {
         always {
             echo '🧹 Limpiando...'
-            // Es buena práctica detener los contenedores aquí también
-            // sh 'docker-compose down' 
         }
     }
 }
