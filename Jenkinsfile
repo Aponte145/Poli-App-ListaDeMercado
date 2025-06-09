@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // (Opcional) Define aquí las credenciales para tu registro de Docker
-        // DOCKER_CREDENTIALS = credentials('tu-docker-hub-credentials-id')
-    }
-
     stages {
         // ===========================================
         // ETAPA 1: CONSTRUCCIÓN Y PRUEBA DEL BACKEND
@@ -55,26 +50,8 @@ pipeline {
             }
         }
 
-        // ==========================================================
-        // ETAPA 4: (Opcional) PUBLICACIÓN DE IMÁGENES EN DOCKER HUB
-        // ==========================================================
-        /*
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    // Inicia sesión en Docker Hub y publica las imágenes
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
-                        sh 'docker-compose push'
-                        echo 'Imágenes publicadas en Docker Hub.'
-                    }
-                }
-            }
-        }
-        */
-
         // ===========================================
-        // ETAPA 5: DESPLIEGUE DE LA APLICACIÓN
+        // ETAPA 4: DESPLIEGUE DE LA APLICACIÓN
         // ===========================================
         stage('Deploy Application') {
             steps {
@@ -92,7 +69,6 @@ pipeline {
         always {
             // Limpia los contenedores después de la ejecución
             echo '🧹 Limpiando...'
-            sh 'docker-compose down --volumes --remove-orphans'
         }
     }
 }
